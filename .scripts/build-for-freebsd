@@ -30,10 +30,12 @@ NODE_VERSIONS_ARRAY="v14.0.0:83 v16.0.0:93 v18.0.0:108"
 
 prepare()
 {
-  mkdir -p $DIR_DIST_NAME
-  mkdir -p $DIR_TARGETS_NAME
+  # mkdir -p $DIR_DIST_NAME
+  # mkdir -p $DIR_TARGETS_NAME
 
-  for node_version_tuple in NODE_VERSIONS_ARRAY
+  echo "processing $NODE_VERSIONS_ARRAY..."
+
+  for node_version_tuple in $NODE_VERSIONS_ARRAY
     echo "node_version_tuple: $node_version_tuple"
   do
   
@@ -48,4 +50,4 @@ prepare()
 
 ######### execute #########
 
-prepare()
+prepare

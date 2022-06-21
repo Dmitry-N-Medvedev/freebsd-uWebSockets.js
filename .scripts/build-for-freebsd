@@ -1,0 +1,59 @@
+#!/bin/sh
+
+CC="$(which cc)"
+CMAKE="$(which cmake)"
+GO="$(which go)"
+CURL="$(which curl)"
+TAR=$(which tar)""
+
+DIR_PREFIX="uWebSockets.js"
+
+DIR_OUT_NAME="$(mktemp -d -t $DIR_PREFIX)"
+DIR_DIST_NAME="$DIR_OUT_NAME/dist"
+DIR_TARGETS_NAME="$DIR_OUT_NAME/targets"
+
+NODE_VERSIONS_ARRAY="v14.0.0:83 v16.0.0:93 v18.0.0:108"
+
+# prepare
+# arch = ARM64;
+# build_boringssl(arch);
+# build_lsquic(arch);
+
+# struct node_version {
+#     char *name;
+#     char *abi;
+# } versions[] = {
+#     {"v14.0.0", "83"},
+#     {"v16.0.0", "93"},
+#     {"v18.0.0", "108"}
+# };
+
+prepare()
+{
+  mkdir -p $DIR_DIST_NAME
+  mkdir -p $DIR_TARGETS_NAME
+
+  for node_version_tuple in NODE_VERSIONS_ARRAY
+    set -f; IFS=':'
+    set -- $node_version_tuple
+
+    NODE_VERSION=$1
+    NODE_ABI=$2
+
+    set +f; unset IFS
+
+    echo "NODE_VERSION: $NODE_VERSION; NODE_ABI: $NODE_ABI"
+  do
+  
+  done
+
+    # for (unsigned int i = 0; i < sizeof(versions) / sizeof(struct node_version); i++) {
+    #     run("curl -OJ https://nodejs.org/dist/%s/node-%s-headers.tar.gz", versions[i].name, versions[i].name);
+    #     run("tar xzf node-%s-headers.tar.gz -C targets", versions[i].name);
+    #     run("curl https://nodejs.org/dist/%s/win-x64/node.lib > targets/node-%s/node.lib", versions[i].name, versions[i].name);
+    # }
+}
+
+######### execute #########
+
+prepare()

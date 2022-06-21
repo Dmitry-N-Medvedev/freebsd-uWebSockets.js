@@ -37,7 +37,9 @@ prepare()
 
   for node_version_tuple in $NODE_VERSIONS_ARRAY
   do
-    echo "node_version_tuple: $node_version_tuple"
+    IFS=':' read -r NODE_VERSION NODE_ABI <<<$node_version_tuple
+
+    echo "NODE_VERSION:$NODE_VERSION NODE_ABI:$NODE_ABI"
   done
 
     # for (unsigned int i = 0; i < sizeof(versions) / sizeof(struct node_version); i++) {

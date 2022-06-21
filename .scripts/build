@@ -1,0 +1,9 @@
+#!/bin/sh
+
+CC="$(which cc)"
+CMAKE="$(which cmake)"
+GO="$(which go)"
+
+$CC -o build-uWebSockets build.c
+
+./build-uWebSockets

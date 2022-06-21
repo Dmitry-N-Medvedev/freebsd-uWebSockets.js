@@ -66,6 +66,12 @@ void build_lsquic(const char *arch) {
     run("cd uWebSockets/uSockets/lsquic && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBORINGSSL_DIR=../boringssl -DCMAKE_BUILD_TYPE=Release -DLSQUIC_BIN=Off . && make lsquic");
 #endif
 }
+#ifdef IS_FREEBSD
+    /* Build for x64 or arm64 (depending on the host) */
+    run("cd uWebSockets/uSockets/lsquic && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBORINGSSL_DIR=../boringssl -DCMAKE_BUILD_TYPE=Release -DLSQUIC_BIN=Off . && make lsquic");
+#endif
+}
+
 
 /* Build boringssl */
 void build_boringssl(const char *arch) {

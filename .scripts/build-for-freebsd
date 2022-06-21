@@ -36,9 +36,8 @@ prepare()
   echo "processing $NODE_VERSIONS_ARRAY..."
 
   for node_version_tuple in $NODE_VERSIONS_ARRAY
-    echo "node_version_tuple: $node_version_tuple"
   do
-  
+    echo "node_version_tuple: $node_version_tuple"
   done
 
     # for (unsigned int i = 0; i < sizeof(versions) / sizeof(struct node_version); i++) {

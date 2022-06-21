@@ -34,15 +34,7 @@ prepare()
   mkdir -p $DIR_TARGETS_NAME
 
   for node_version_tuple in NODE_VERSIONS_ARRAY
-    set -f; IFS=':'
-    set -- $node_version_tuple
-
-    NODE_VERSION=$1
-    NODE_ABI=$2
-
-    set +f; unset IFS
-
-    echo "NODE_VERSION: $NODE_VERSION; NODE_ABI: $NODE_ABI"
+    echo "node_version_tuple: $node_version_tuple"
   do
   
   done

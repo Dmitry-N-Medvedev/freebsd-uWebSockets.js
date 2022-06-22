@@ -41,10 +41,8 @@ struct node_version {
     char *name;
     char *abi;
 } versions[] = {
-    /*
     {"v14.0.0", "83"},
     {"v16.0.0", "93"},
-    */
     {"v18.4.0", "108"}
 };
 
@@ -78,6 +76,10 @@ void build_lsquic(const char *arch) {
 /* Build boringssl */
 void build_boringssl(const char *arch) {
 
+#ifdef IS_FREEBSD
+	run("cd uWebSockets/uSockets/boringssl && mkdir -p %s && cd %s && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release .. && gmake crypto ssl", arch, arch);
+#endif
+
 #ifdef IS_MACOS
     /* Build for x64 (the host) */
     run("cd uWebSockets/uSockets/boringssl && mkdir -p x64 && cd x64 && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_DEPLOYMENT_TARGET=10.14 .. && make crypto ssl");
@@ -86,14 +88,6 @@ void build_boringssl(const char *arch) {
     run("cd uWebSockets/uSockets/boringssl && mkdir -p arm64 && cd arm64 && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64 .. && make crypto ssl");
 #endif
 
-#ifdef IS_FREEBSD
-    /* Build for x64 (the host) */
-    run("cd uWebSockets/uSockets/boringssl && mkdir -p x64 && cd x64 && cmake -DCMAKE_BUILD_TYPE=Release .. && make crypto ssl");
-    
-    /* Build for arm64 (cross compile) */
-    /* NOT YET: run("cd uWebSockets/uSockets/boringssl && mkdir -p arm64 && cd arm64 && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64 .. && make crypto ssl"); */
-#endif
-    
 #ifdef IS_LINUX
     /* Build for x64 or arm64 (depending on the host) */
     run("cd uWebSockets/uSockets/boringssl && mkdir -p %s && cd %s && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release .. && make crypto ssl", arch, arch);

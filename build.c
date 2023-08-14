@@ -16,6 +16,11 @@
 #define OS "darwin"
 #define IS_MACOS
 #endif
+#ifdef __FreeBSD__
+#define OS "freebsd"
+#define IS_FREEBSD
+#endif
+
 
 const char *ARM64 = "arm64";
 const char *X64 = "x64";
@@ -38,7 +43,7 @@ struct node_version {
 } versions[] = {
     {"v14.0.0", "83"},
     {"v16.0.0", "93"},
-    {"v18.0.0", "108"}
+    {"v18.4.0", "108"}
 };
 
 /* Downloads headers, creates folders */
@@ -60,10 +65,20 @@ void build_lsquic(const char *arch) {
     /* Build for x64 or arm64 (depending on the host) */
     run("cd uWebSockets/uSockets/lsquic && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBORINGSSL_DIR=../boringssl -DCMAKE_BUILD_TYPE=Release -DLSQUIC_BIN=Off . && make lsquic");
 #endif
+
+#ifdef IS_FREEBSD
+    /* Build for x64 or arm64 (depending on the host) */
+    run("cd uWebSockets/uSockets/lsquic && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBORINGSSL_DIR=../boringssl -DCMAKE_BUILD_TYPE=Release -DLSQUIC_BIN=Off . && make lsquic");
+#endif
 }
+
 
 /* Build boringssl */
 void build_boringssl(const char *arch) {
+
+#ifdef IS_FREEBSD
+	run("cd uWebSockets/uSockets/boringssl && mkdir -p %s && cd %s && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release .. && gmake crypto ssl", arch, arch);
+#endif
 
 #ifdef IS_MACOS
     /* Build for x64 (the host) */
@@ -72,7 +87,7 @@ void build_boringssl(const char *arch) {
     /* Build for arm64 (cross compile) */
     run("cd uWebSockets/uSockets/boringssl && mkdir -p arm64 && cd arm64 && cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=arm64 .. && make crypto ssl");
 #endif
-    
+
 #ifdef IS_LINUX
     /* Build for x64 or arm64 (depending on the host) */
     run("cd uWebSockets/uSockets/boringssl && mkdir -p %s && cd %s && cmake -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DCMAKE_BUILD_TYPE=Release .. && make crypto ssl", arch, arch);
